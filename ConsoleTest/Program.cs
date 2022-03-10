@@ -1,25 +1,37 @@
 ﻿
-//using BlazorRpc;
-//using Grpc.Net.Client;
+using Grpc.Net.Client;
+using BlazorRpc;
 
 Console.WriteLine("Hello, Blazor GRPC!");
 
 Thread.Sleep(300);
 
-//var rf = new RF.RFClient(Channel);
+var serviceUrl = "https://localhost:7158/";
 
-//var request = new FunctionRequest {
-//    X = 7
-//};
-//var cubitRoot = await rf.CubicRootAsync(request);
-//Console.WriteLine("CubicRoof f({0}) = {1}", request.X, cubitRoot.Y);
+Console.WriteLine(serviceUrl);
+Console.WriteLine("Pres any key when rever is ready");
+Console.ReadLine();
 
-//var legs = new LegsRequest {
-//    A = 1.0,
-//    B = 1.0
-//};
-//var hypotenuse = rf.Hypotenuse(legs);
+try {
+    using var channel = GrpcChannel.ForAddress(serviceUrl);
 
-//Console.WriteLine("Hypotenus({0},{1}) = {2}", legs.A, legs.B, hypotenuse.Y);
+    var rf = new RF.RFClient(channel);
 
-//Console.ReadKey();
+    var request = new FunctionRequest {
+        X = 7
+    };
+    var cubitRoot = await rf.CubicRootAsync(request);
+    Console.WriteLine("CubicRoof f({0}) = {1}", request.X, cubitRoot.Y);
+
+    var legs = new LegsRequest {
+        A = 1.0,
+        B = 1.0
+    };
+    var hypotenuse = rf.Hypotenuse(legs);
+
+    Console.WriteLine("Hypotenus({0},{1}) = {2}", legs.A, legs.B, hypotenuse.Y);
+}
+catch(Exception exception) {
+    Console.WriteLine("Exception:\n" + exception.Message);
+}
+Console.ReadKey();
