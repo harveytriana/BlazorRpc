@@ -6,17 +6,13 @@ package rf; // remote functions
 
 // ------------------------- services -----------------------
 service RF{
-	rpc CubicRoot (FunctionRequest) returns (FunctionReply);
 	rpc Hypotenuse (LegsRequest) returns (FunctionReply);
+	// other functions...
 }
 
 // ------------------------- messages -----------------------
 message FunctionReply{
 	double y = 1;
-}
-
-message FunctionRequest{
-	double x = 1;
 }
 
 message LegsRequest{

@@ -4,21 +4,74 @@
 
 <PageTitle>Remote Functions Test</PageTitle>
 
+<style>
+    .typeface {
+        font-family: Consolas;
+    }
+
+    .input-box {
+        border: 1px solid lightgray;
+        margin-left: 8px;
+        margin-bottom: 4px;
+        text-align: right;
+        padding-right: 8px;
+    }
+
+    .simply-command {
+        color: rebeccapurple;
+        text-decoration: underline;
+    }
+
+    .input-box:focus {
+        outline: none !important;
+        border: 1px solid silver;
+        box-shadow: none;/* 0 0 10px #719ECE;*/
+    }
+</style>
+
 <h3>Remote Functions gRPC</h3>
+<hr />
+<table class="typeface">
+    <tr>
+        <td><label>Leg-A</label></td>
+        <td><input class="input-box" @bind-value=_a /></td>
+    </tr>
+    <tr>
+        <td><label>Leg-B</label></td>
+        <td><input class="input-box" @bind-value=_b /></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td style="text-align:right">
+            <span role="button" class="simply-command" @onclick="Execute">Submit</span>
+        </td>
+    </tr>
+</table>
+
 <br />
 <pre>@_echo</pre>
 
 @code {
     string _echo = string.Empty;
 
+    string _a = "1", _b = "1";
+
     protected override async Task OnInitializedAsync()
     {
+        await Execute();
+    }
+    async Task Execute()
+    {
         try {
-            var request = new LegsRequest { A = 11.0, B = 7.0 };
+            double.TryParse(_a, out double a);
+            double.TryParse(_b, out double b);
+
+            var request = new LegsRequest { A = a, B = b };
             var reply = await _rf.HypotenuseAsync(request);
 
-            _echo += $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
-        }catch(Exception exception) {
+            _echo = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
+        }
+        catch(Exception exception) {
             _echo = "Exception:\n" + exception.Message;
         }
 

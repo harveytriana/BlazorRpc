@@ -17,12 +17,6 @@ try {
 
     var rf = new RF.RFClient(channel);
 
-    var request = new FunctionRequest {
-        X = 7
-    };
-    var cubitRoot = await rf.CubicRootAsync(request);
-    Console.WriteLine("CubicRoof f({0}) = {1}", request.X, cubitRoot.Y);
-
     var legs = new LegsRequest {
         A = 1.0,
         B = 1.0
