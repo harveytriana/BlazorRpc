@@ -1,0 +1,26 @@
+﻿@page "/grpc-rf"
+@using BlazorRpc
+@inject RF.RFClient _rf
+
+<PageTitle>Remote Functions Test</PageTitle>
+
+<h3>Remote Functions gRPC</h3>
+<br />
+<pre>@_echo</pre>
+
+@code {
+    string _echo = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try {
+            var request = new LegsRequest { A = 11.0, B = 7.0 };
+            var reply = await _rf.HypotenuseAsync(request);
+
+            _echo += $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
+        }catch(Exception exception) {
+            _echo = "Exception:\n" + exception.Message;
+        }
+
+    }
+}
