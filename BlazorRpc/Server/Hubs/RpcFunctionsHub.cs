@@ -4,10 +4,8 @@ namespace BlazorRpc.Server.Hubs;
 
 public class RpcFunctionsHub : Hub
 {
-    public FunctionReply Hypotenuse(LegsRequest legs)
+    public double Hypotenuse(LegsRequest legs)
     {
-        return new FunctionReply {
-            Y = Math.Sqrt(legs.A * legs.A + legs.B * legs.B)
-        };
+        return Math.Sqrt(legs.A * legs.A + legs.B * legs.B);
     }
 }

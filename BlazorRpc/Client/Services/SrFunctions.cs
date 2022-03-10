@@ -25,12 +25,12 @@ namespace BlazorRpc.Client.Services
             });
         }
 
-        public async Task<FunctionReply> HypotenuseAsync(LegsRequest legs)
+        public async Task<double> HypotenuseAsync(LegsRequest legs)
         {
             if(_connection is not null) {
-                return await _connection.InvokeAsync<FunctionReply>("Hypotenuse", legs);
+                return await _connection.InvokeAsync<double>("Hypotenuse", legs);
             }
-            return null!;
+            return 0.0;
         }
 
         public async ValueTask DisposeAsync()

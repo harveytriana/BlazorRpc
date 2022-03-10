@@ -1,6 +1,6 @@
 ﻿@page "/grpc-rf"
 @using BlazorRpc
-@inject RF.RFClient _rf
+@inject GrpcFuntions _rf
 @inject SrFunctions _srf
 
 <PageTitle>Remote Functions Test</PageTitle>
@@ -72,15 +72,18 @@
         try {
             double.TryParse(_a, out double a);
             double.TryParse(_b, out double b);
+            double h;
+            
+            // parameter
+            var legs = new LegsRequest { A = a, B = b };
 
-            var request = new LegsRequest { A = a, B = b };
-            var reply = await _rf.HypotenuseAsync(request);
+            // grpc
+            h = await _rf.HypotenuseAsync(legs);
+            _echoGrpc = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
 
-            _echoGrpc = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
-
-            // SR
-            reply = await _srf.HypotenuseAsync(request);
-            _echoSr = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
+            // signalr
+            h = await _srf.HypotenuseAsync(legs);
+            _echoSr = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
         }
         catch(Exception exception) {
             _echoGrpc = "Exception:\n" + exception.Message;
