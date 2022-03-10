@@ -1,6 +1,7 @@
 ﻿@page "/grpc-rf"
 @using BlazorRpc
 @inject RF.RFClient _rf
+@inject SrFunctions _srf
 
 <PageTitle>Remote Functions Test</PageTitle>
 
@@ -17,19 +18,20 @@
         padding-right: 8px;
     }
 
+        .input-box:focus {
+            outline: none !important;
+            border: 1px solid silver;
+            box-shadow: none; 
+        }
+
+
     .simply-command {
         color: rebeccapurple;
         text-decoration: underline;
     }
-
-    .input-box:focus {
-        outline: none !important;
-        border: 1px solid silver;
-        box-shadow: none;/* 0 0 10px #719ECE;*/
-    }
 </style>
 
-<h3>Remote Functions gRPC</h3>
+<h3>Remote Functions RPC</h3>
 <hr />
 <table class="typeface">
     <tr>
@@ -43,16 +45,21 @@
     <tr>
         <td></td>
         <td style="text-align:right">
-            <span role="button" class="simply-command" @onclick="Execute">Submit</span>
+            <span role="button" class="simply-command" @onclick="Execute">Execute</span>
         </td>
     </tr>
 </table>
-
+<hr />
 <br />
-<pre>@_echo</pre>
+<h4>gRPC</h4>
+<pre>@_echoGrpc</pre>
+<hr />
+<h4>SignalR</h4>
+<pre>@_echoSr</pre>
 
 @code {
-    string _echo = string.Empty;
+    string _echoGrpc = string.Empty;
+    string _echoSr = string.Empty;
 
     string _a = "1", _b = "1";
 
@@ -69,10 +76,14 @@
             var request = new LegsRequest { A = a, B = b };
             var reply = await _rf.HypotenuseAsync(request);
 
-            _echo = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
+            _echoGrpc = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
+
+            // SR
+            reply = await _srf.HypotenuseAsync(request);
+            _echoSr = $"Hypotenuse f({request.A}, {request.B}) = {reply.Y}";
         }
         catch(Exception exception) {
-            _echo = "Exception:\n" + exception.Message;
+            _echoGrpc = "Exception:\n" + exception.Message;
         }
 
     }

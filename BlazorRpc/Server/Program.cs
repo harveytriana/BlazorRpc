@@ -1,3 +1,4 @@
+using BlazorRpc.Server.Hubs;
 using BlazorRpc.Services;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddGrpc();
-
+builder.Services.AddSignalR().AddMessagePackProtocol();
 builder.Services.AddResponseCompression(opts =>
 {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -38,8 +39,10 @@ app.UseGrpcWeb();
 
 app.MapRazorPages();
 app.MapControllers();
-
+// gRPC
 app.MapGrpcService<RFService>().EnableGrpcWeb();
+// signalR
+app.MapHub<RpcFunctionsHub>("/RpcFunctionsHub");
 
 app.MapFallbackToFile("index.html");
 
