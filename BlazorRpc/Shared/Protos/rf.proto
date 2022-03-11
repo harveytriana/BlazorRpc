@@ -7,6 +7,7 @@ package rf; // remote functions
 // ------------------------- services -----------------------
 service RF{
 	rpc Hypotenuse (LegsRequest) returns (FunctionReply);
+
 	// other functions...
 }
 

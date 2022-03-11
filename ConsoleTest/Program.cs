@@ -6,9 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 Console.WriteLine("Hello, RPC!");
 
-Thread.Sleep(300);
-
-var serviceUrl = "https://localhost:7158/";
+var serviceUrl = "https://localhost:7158/"; // blazor server
 
 Console.WriteLine(serviceUrl);
 Console.WriteLine("Press any key when server is ready\n");
@@ -23,9 +21,6 @@ var legs = new LegsRequest {
 GrpcTest().Wait();
 SignalRTest().Wait();
 
-Console.WriteLine("Bye");
-Console.ReadKey();
-
 async Task GrpcTest()
 {
     try {
@@ -35,11 +30,10 @@ async Task GrpcTest()
 
         var hypotenuse = await rf.HypotenuseAsync(legs);
 
-        Console.WriteLine("From GRPC\tHypotenus({0},{1}) = {2}", legs.A, legs.B, hypotenuse.Y);
+        Console.WriteLine("From GRPC\tHypotenuse({0},{1}) = {2}", legs.A, legs.B, hypotenuse.Y);
     }
     catch { }
 }
-
 
 async Task SignalRTest()
 {
@@ -52,7 +46,7 @@ async Task SignalRTest()
 
         var hypotenuse = await _connection.InvokeAsync<double>("Hypotenuse", legs);
 
-        Console.WriteLine("From SignalR\tHypotenus({0},{1}) = {2}", legs.A, legs.B, hypotenuse);
+        Console.WriteLine("From SignalR\tHypotenuse({0},{1}) = {2}", legs.A, legs.B, hypotenuse);
     }
     catch { }
 }
