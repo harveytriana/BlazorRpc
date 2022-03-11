@@ -1,6 +1,6 @@
 ﻿
-using Grpc.Net.Client;
 using BlazorRpc;
+using Grpc.Net.Client;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.Extensions.DependencyInjection;
 
