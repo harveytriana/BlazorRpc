@@ -21,7 +21,7 @@
         .input-box:focus {
             outline: none !important;
             border: 1px solid silver;
-            box-shadow: none; 
+            box-shadow: none;
         }
 
 
@@ -67,27 +67,22 @@
     {
         await Execute();
     }
+
     async Task Execute()
     {
-        try {
-            double.TryParse(_a, out double a);
-            double.TryParse(_b, out double b);
-            double h;
-            
-            // parameter
-            var legs = new LegsRequest { A = a, B = b };
+        double.TryParse(_a, out double a);
+        double.TryParse(_b, out double b);
+        double h;
 
-            // grpc
-            h = await _rf.HypotenuseAsync(legs);
-            _echoGrpc = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
+        // parameter
+        var legs = new LegsRequest { A = a, B = b };
 
-            // signalr
-            h = await _srf.HypotenuseAsync(legs);
-            _echoSr = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
-        }
-        catch(Exception exception) {
-            _echoGrpc = "Exception:\n" + exception.Message;
-        }
+        // grpc
+        h = await _rf.HypotenuseAsync(legs);
+        _echoGrpc = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
 
+        // signalr
+        h = await _srf.HypotenuseAsync(legs);
+        _echoSr = $"Hypotenuse f({legs.A}, {legs.B}) = {h}";
     }
 }

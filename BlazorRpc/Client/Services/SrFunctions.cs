@@ -11,7 +11,7 @@ namespace BlazorRpc.Client.Services
         {
             _connection = new HubConnectionBuilder()
                 .WithUrl(navigation.ToAbsoluteUri("/RpcFunctionsHub"))
-                .AddMessagePackProtocol()
+                .AddMessagePackProtocol() // binary protocol
                 .Build();
 
             Task.Run(async () => {
