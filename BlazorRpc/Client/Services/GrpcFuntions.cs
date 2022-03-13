@@ -36,7 +36,7 @@ public class GrpcFuntions : IAsyncDisposable
         if(_channel is null) {
             return;
         }
-        await _channel.ShutdownAsync();
+        await _channel.ShutdownAsync(); // recommended
         GC.SuppressFinalize(this);
     }
 }

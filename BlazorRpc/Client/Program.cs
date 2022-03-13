@@ -9,7 +9,7 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Services.AddSingleton<GrpcFuntions>();
-builder.Services.AddSingleton<SrFunctions>();
+builder.Services.AddScoped<GrpcFuntions>();
+builder.Services.AddScoped<SrFunctions>();
 
 await builder.Build().RunAsync();
