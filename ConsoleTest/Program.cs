@@ -21,6 +21,8 @@ var legs = new LegsRequest {
 GrpcTest().Wait();
 SignalRTest().Wait();
 
+Console.ReadKey();
+
 async Task GrpcTest()
 {
     try {

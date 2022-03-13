@@ -6,15 +6,16 @@ namespace BlazorRpc.Client.Services;
 
 public class GrpcFuntions : IAsyncDisposable
 {
-    RF.RFClient? _rfClient;
+    readonly GrpcChannel? _channel;
+    readonly RF.RFClient? _rfClient;
 
     public GrpcFuntions(NavigationManager navigation)
     {
         try {
             var httpClient = new HttpClient(new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler()));
             var baseUri = navigation.BaseUri;
-            var channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions { HttpClient = httpClient });
-            _rfClient = new RF.RFClient(channel);
+            _channel = GrpcChannel.ForAddress(baseUri, new GrpcChannelOptions { HttpClient = httpClient });
+            _rfClient = new RF.RFClient(_channel);
         }
         catch(Exception exception) {
             Console.WriteLine("Exception: {0}", exception.Message);
@@ -32,8 +33,10 @@ public class GrpcFuntions : IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await Task.Delay(0);
-        _rfClient = null;
+        if(_channel is null) {
+            return;
+        }
+        await _channel.ShutdownAsync();
         GC.SuppressFinalize(this);
     }
 }
