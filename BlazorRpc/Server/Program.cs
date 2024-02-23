@@ -1,18 +1,16 @@
 using BlazorRpc.Server.Hubs;
 using BlazorRpc.Services;
+
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Container Services
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddGrpc();
 builder.Services.AddSignalR().AddMessagePackProtocol();
-builder.Services.AddResponseCompression(opts =>
-{
+builder.Services.AddResponseCompression(opts => {
     opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
         new[] { "application/octet-stream" });
 });
